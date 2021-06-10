@@ -1,0 +1,75 @@
+# ElasticSearch Configuration 
+ # change defUsername if you have another usename defined for you elasticsearch
+ # change clusterDomain if you have another domain for your elasticsearch or change it if your elasticsearch kubernetes service name is different
+elasticsearch:
+  name: "es"
+  # This is default port of Elasticsearch, if you've changed the port can change it here 
+  # Or if your Elasticsearch domain doesn't have a port, just replace it with "" -> port: ""
+  port: 9200
+  #ES_Username
+  defUsername: "elastic"
+  #ES_Password
+  esPassword: ""
+  # Elasticsearch Domain
+  clusterDomain: "es-es-http"
+# arc configuraion
+arc:
+  name: "arc"
+  nodes: 1
+  image: "appbaseio/arc"
+  tag: ""
+  serviceType: ClusterIP
+  nodePort: ""
+  port: 8000
+  storage: 1Gi
+
+# Appbase.io configuration / get id from "https://arc-dashboard.appbase.io/install"
+appbase:
+  #APPBASE_ID
+  id: "5626a0bb-fd05-4863-9457-46326033a708."
+  #APPBASE_USERNAME
+  username: "admin"
+  #APPBASE_PASSWORD
+  password: "admin"
+  domain: ""
+
+# Volume configuration
+# If you want it to create a Volume for you, leave name empty 
+# but if you want to use your Persistent volume, enter it's name
+volume:
+  name: ""
+  storageClassName: "standard"
+  accessModes: "ReadWriteMany"
+  storageSize: 1Gi
+  # pvcName is the name of "Persistent Volume Claim"  which we use to assign it to a "Persistent Volume"
+  pvcName: "pvc"
+  # custume: "true" you can customize your volume setting, what ever you wrtie in custome setting, will be replaced 
+  custom: "false"
+  # customeSetting should be edited the same way / Note: Follow indent order
+  customSetting: | 
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: test-ebs
+    spec:
+      containers:
+      - image: k8s.gcr.io/test-webserver
+        name: test-container
+        volumeMounts:
+        - mountPath: /test-ebs
+          name: test-volume
+      volumes:
+      - name: test-volume
+        # This AWS EBS volume must already exist.
+        awsElasticBlockStore:
+          volumeID: '<volume id>'
+          fsType: ext4
+
+# you can add your certificate here by configuring below values
+# tlsCrt is your tls.crt / tlsKey is tls.key / caCrt is ca.crt
+# name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty
+cert:
+  name: "ssl"
+  tlsCrt: ""
+  tlsKey: ""
+  caCrt: ""
