@@ -8,8 +8,8 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: wget
-      image: busybox
+    - name: curl
+      image: curlimages/curl
       command: ['ping']
       args: ['{{.Values.arc.name }} -c1']
   restartPolicy: Never

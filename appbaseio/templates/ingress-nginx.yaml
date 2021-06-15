@@ -1,9 +1,10 @@
+{{ if empty .Values.loadBalancer.serviceType }}
 apiVersion: v1
 kind: Namespace
 metadata:
   name: ingress-nginx
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: nginx-service-account
@@ -178,7 +179,7 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
@@ -200,17 +201,36 @@ metadata:
   namespace: default
 spec:
   rules:
+    {{ if empty .Values.appbase.domain}}
     - http:
         paths:
-          - backend:
-              serviceName: {{ .Values.arc.name }}
-              servicePort: {{ .Values.arc.port }}
+          - pathType: Prefix
             path: /
-      # host: es.mydomain.com
+            backend:
+              service:
+                name: {{ .Values.arc.name }}
+                port: 
+                 number: {{ .Values.arc.port }}
+    {{else if .Values.appbase.domain}}
+    - host: {{ .Values.appbase.domain }}
+        http:
+          paths:
+            - pathType: Prefix
+              path: /
+              backend:
+                service:
+                  name: {{ .Values.arc.name }}
+                  port: 
+                   number: {{ .Values.arc.port }}
+                   
+        
+      {{ end }}
       
   tls:
-    #- hosts:
-    #  - es.mydomain.com
+    {{ if .Values.appbase.domain }}
+    - hosts:
+     - {{ .Values.appbase.domain }}
+    {{ end }}
     - secretName: {{ .Values.cert.name }}
 ---
 apiVersion: v1
@@ -237,3 +257,5 @@ spec:
     app: ingress-nginx
   sessionAffinity: None
   type: LoadBalancer
+
+  {{ end }}
