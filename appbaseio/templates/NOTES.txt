@@ -1,0 +1,6 @@
+{{- if eq .Values.loadBalancer.serviceType "NodePort"}}
+Use below command to connect to get appbaseio Access URL:
+minikube service --url {{ .Values.arc.name }}-nodeport
+
+** If you're not using minikube, you can set loadBalancer.serviceType to "LoadBalancer"
+{{ end }}

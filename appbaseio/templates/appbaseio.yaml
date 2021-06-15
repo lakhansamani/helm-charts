@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name:  {{ .Values.arc.name }} 
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  generation: 1
+  name: {{ .Values.arc.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.arc.name }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: {{ .Values.arc.name }}
+    spec:
+      containers:
+        - env:
+            - name: USERNAME
+              value: {{ .Values.appbase.username }}
+            - name: PASSWORD
+              value: {{ .Values.appbase.password }}
+            - name: APPBASE_ID
+              value: {{ .Values.appbase.id }}
+            - name: ES_CLUSTER_URL
+              value: {{ .Values.elasticsearch.clusterURL }}
+            - name: LOG_FILE_PATH
+              value: "/mnt/data/es.json"
+          image: {{.Values.arc.image}}:{{.Values.arc.tag | default .Chart.AppVersion}}
+          imagePullPolicy: IfNotPresent
+          name: {{ .Values.arc.name }}
+          ports:
+            - containerPort: {{ .Values.arc.port }}
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: arcdata
+              mountPath: /mnt/data
+              subPath: es.json
+      volumes:
+        - name: arcdata
+          persistentVolumeClaim:
+            claimName: {{ .Values.volume.pvcName }}
+
+  replicas: {{ .Values.arc.nodes }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.arc.name }}
+  labels:
+    app: {{ .Values.arc.name }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.arc.port }}
+      targetPort: {{ .Values.arc.port }}
+  selector:
+    app: {{ .Values.arc.name }}

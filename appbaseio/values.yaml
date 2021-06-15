@@ -1,0 +1,62 @@
+# ElasticSearch Configuration 
+ # change defUsername if you have another usename defined for you elasticsearch
+ # change clusterDomain if you have another domain for your elasticsearch or change it if your elasticsearch kubernetes service name is different
+elasticsearch:
+   # clusterURL based on basic authentication / fluent-bit splites this clusterURL so 
+   # it should be in following pattern: http://<user>:<password>@domain:port ( Prtotocol Can also be -> https)
+  clusterURL: ""
+
+# arc configuraion
+arc:
+  name: "arc"
+  nodes: 1
+  image: "appbaseio/arc"
+  tag: ""
+  port: 8000
+  storage: 1Gi
+
+# Appbase.io configuration / get id from "https://arc-dashboard.appbase.io/install"
+appbase:
+  #APPBASE_ID
+  id: ""
+  #APPBASE_USERNAME
+  username: "admin"
+  #APPBASE_PASSWORD
+  password: "admin"
+  domain: ""
+
+# Volume configuration
+# If you want it to create a Volume for you, leave name empty 
+# but if you want to use your Persistent volume, enter it's name
+volume:
+  name: ""
+  storageClassName: "standard"
+  accessModes: "ReadWriteMany"
+  storageSize: 1Gi
+  # pvcName is the name of "Persistent Volume Claim"  which we use to assign it to a "Persistent Volume"
+  pvcName: "pvc"
+  # custume: "true" you can customize your volume setting, what ever you wrtie in custome setting, will be replaced 
+  custom: "false"
+  # customeSetting should be edited the same way / Note: Follow indent order
+  # in the following we used an AWS volume for test to show how this customizing works
+  customSetting: | 
+      volumes:
+      - name: test-volume
+        # This AWS EBS volume must already exist.
+        awsElasticBlockStore:
+          volumeID: '<volume id>'
+          fsType: ext4
+
+# you can add your certificate here by configuring below values
+# tlsCrt is your tls.crt / tlsKey is tls.key / caCrt is ca.crt
+# name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty
+cert:
+  name: "ssl"
+  tlsCrt: ""
+  tlsKey: ""
+  caCrt: ""
+
+# Nginx LoadBalancer Config
+
+loadBalancer:
+  serviceType: ""

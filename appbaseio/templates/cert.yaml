@@ -1,0 +1,12 @@
+{{ if .Values.cert.tlsCrt}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.cert.name }}
+type: Opaque
+data:
+  tls.crt: {{ .Values.cert.tlsCrt }}
+  tls.key: {{ .Values.cert.tlsKey }}
+  ca.crt: {{ .Values.cert.caCrt }}
+
+{{ end }}
