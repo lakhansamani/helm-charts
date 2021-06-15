@@ -28,11 +28,7 @@ spec:
             - name: APPBASE_ID
               value: {{ .Values.appbase.id }}
             - name: ES_CLUSTER_URL
-            {{ if .Values.elasticsearch.port}}
-              value: "http://{{.Values.elasticsearch.defUsername}}:{{.Values.elasticsearch.esPassword}}@{{ .Values.elasticsearch.clusterDomain }}:{{.Values.elasticsearch.port}}/"
-              {{else if empty .Values.elasticsearch.port}}
-              value: "http://{{.Values.elasticsearch.defUsername}}:{{.Values.elasticsearch.esPassword}}@{{ .Values.elasticsearch.clusterDomain }}/"
-              {{end}}
+              value: {{ .Values.elasticsearch.clusterURL }}
             - name: LOG_FILE_PATH
               value: "/mnt/data/es.json"
           image: {{.Values.arc.image}}:{{.Values.arc.tag | default .Chart.AppVersion}}
@@ -60,12 +56,9 @@ metadata:
   labels:
     app: {{ .Values.arc.name }}
 spec:
-  type: {{ .Values.arc.serviceType }}
+  type: ClusterIP
   ports:
     - port: {{ .Values.arc.port }}
       targetPort: {{ .Values.arc.port }}
-      {{ if .Values.arc.nodePort }}
-      nodePort: {{ .Values.arc.nodePort | default 30007 }}
-      {{ end }}
   selector:
     app: {{ .Values.arc.name }}

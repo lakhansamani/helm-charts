@@ -2,31 +2,23 @@
  # change defUsername if you have another usename defined for you elasticsearch
  # change clusterDomain if you have another domain for your elasticsearch or change it if your elasticsearch kubernetes service name is different
 elasticsearch:
-  name: "es"
-  # This is default port of Elasticsearch, if you've changed the port can change it here 
-  # Or if your Elasticsearch domain doesn't have a port, just replace it with "" -> port: ""
-  port: 9200
-  #ES_Username
-  defUsername: "elastic"
-  #ES_Password
-  esPassword: ""
-  # Elasticsearch Domain
-  clusterDomain: "es-es-http"
+   # clusterURL based on basic authentication / fluent-bit splites this clusterURL so 
+   # it should be in following pattern: http://<user>:<password>@domain:port ( Prtotocol Can also be -> https)
+  clusterURL: ""
+
 # arc configuraion
 arc:
   name: "arc"
   nodes: 1
   image: "appbaseio/arc"
   tag: ""
-  serviceType: ClusterIP
-  nodePort: ""
   port: 8000
   storage: 1Gi
 
 # Appbase.io configuration / get id from "https://arc-dashboard.appbase.io/install"
 appbase:
   #APPBASE_ID
-  id: "5626a0bb-fd05-4863-9457-46326033a708."
+  id: ""
   #APPBASE_USERNAME
   username: "admin"
   #APPBASE_PASSWORD
@@ -46,18 +38,8 @@ volume:
   # custume: "true" you can customize your volume setting, what ever you wrtie in custome setting, will be replaced 
   custom: "false"
   # customeSetting should be edited the same way / Note: Follow indent order
+  # in the following we used an AWS volume for test to show how this customizing works
   customSetting: | 
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      name: test-ebs
-    spec:
-      containers:
-      - image: k8s.gcr.io/test-webserver
-        name: test-container
-        volumeMounts:
-        - mountPath: /test-ebs
-          name: test-volume
       volumes:
       - name: test-volume
         # This AWS EBS volume must already exist.
@@ -73,3 +55,8 @@ cert:
   tlsCrt: ""
   tlsKey: ""
   caCrt: ""
+
+# Nginx LoadBalancer Config
+
+loadBalancer:
+  serviceType: ""
