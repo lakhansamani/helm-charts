@@ -36,3 +36,5 @@ spec:
   resources:
     requests:
       storage: {{ .Values.volume.storageSize}} 
+  volumeName: {{ .Values.volume.name | default "pv" }}
+  

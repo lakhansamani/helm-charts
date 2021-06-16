@@ -200,38 +200,36 @@ metadata:
   name: arc-ingress
   namespace: default
 spec:
+{{- if and (.Values.appbase.domain ) (.Values.cert.name) }}
+  tls:
+    - hosts:
+        - {{ .Values.appbase.domain }}
+      secretName: {{ .Values.cert.name }}
+{{- end }}
   rules:
-    {{ if empty .Values.appbase.domain}}
+    {{- if empty .Values.appbase.domain}}
     - http:
         paths:
           - pathType: Prefix
             path: /
             backend:
               service:
-                name: {{ .Values.arc.name }}
+                name: {{ .Values.appbase.name }}
                 port: 
-                 number: {{ .Values.arc.port }}
-    {{else if .Values.appbase.domain}}
+                 number: {{ .Values.appbase.port }}
+    {{- else if .Values.appbase.domain }}
     - host: {{ .Values.appbase.domain }}
-        http:
-          paths:
-            - pathType: Prefix
-              path: /
-              backend:
-                service:
-                  name: {{ .Values.arc.name }}
-                  port: 
-                   number: {{ .Values.arc.port }}
-                   
-        
-      {{ end }}
-      
-  tls:
-    {{ if .Values.appbase.domain }}
-    - hosts:
-     - {{ .Values.appbase.domain }}
-    {{ end }}
-    - secretName: {{ .Values.cert.name }}
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: {{ .Values.appbase.name }}
+                port: 
+                  number: {{ .Values.appbase.port }}
+                  
+     {{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -257,5 +255,4 @@ spec:
     app: ingress-nginx
   sessionAffinity: None
   type: LoadBalancer
-
   {{ end }}

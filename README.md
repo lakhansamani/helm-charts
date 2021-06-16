@@ -42,9 +42,9 @@ Here are the variables you can set for your cluster:
 |  Name |Default Value   | Kind  |  Description |
 |---|---|---|---|
 | elasticsearch.clusterURL  | ""  | String  |  clusterURL based on basic authentication. fluent-bit splites this clusterURL soit should be in following pattern: "http://<user>:<password>@domain:port" ( Prtotocol Can also be -> https)  |
-|  arc.name | arc  |  String | It's the name of Arc service which you can use to access your application via service name  |
-|  arc.image |  appbaseio/arc | String  |  This is the image Appbase.io provides as gateway for your elasticsearch, if you have your local repository, you can push Arc image into that then change the URL here. |
-|  arc.port | 8000  | Integer  | The port that used for Arc service |
+|  appbase.name | arc  |  String | It's the name of Arc service (appbase API gate way for elasticsearch) which you can use to access your application via service name, there will be a kubernetes service with this name in default namespace  |
+|  appbase.image |  appbaseio/arc | String  |  This is the image Appbase.io provides as gateway for your elasticsearch, if you have your local repository, you can push Arc image into that then change the URL here. |
+|  appbase.port | 8000  | Integer  | The port that used for Arc service |
 | appbase.id  |  "" |  String |  This is **APPBASE_ID** that you can get from [Appbase.io]("https://arc-dashboard.appbase.io/install") |
 |  appbase.username | admin  |  String |  This is the username you choose for your Appbaseio |
 | appbase.password  | admin  |  String | This is the password you choose for your Appbaseio  |
@@ -53,8 +53,8 @@ Here are the variables you can set for your cluster:
 |  volume.storageClassName |  standard | String  | Your Storage class which should be the same with PVC, if you have a specific class for your Volume, set that here to also be set for PVC  |
 | volume.accessModes  | ReadWriteMany  |  String |  Access mode for volume |
 |  volume.storageSize | 1Gi  | String  | This is the size of PVC storage, Default volume size is 5Gi which you can handle how much of it be assigned to PVC  |
-|  volume.pvcName | pvc  | String  |  You can change PVC (Persitent Volume Claim) name here, it's assigned to PV(Persistent Volume) |
-|  cert.name | ssl  | String  | you can add your certificate here by configuring below values. name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty  |
+|  volume.pvcName | pvc  | String  |  You can change PVC (Persitent Volume Claim) name here, it's assigned to PV(Persistent Volume), if you have a seperated PV, you can set PVC name in [`claimRef`]("https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume") |
+|  cert.name | ""  | String  | you can add your certificate here by configuring below values. name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty  |
 | cert.tlsCrt  |  "" | String  |  "tlsCrt" is your "tls.crt" |
 |  cert.tlsKey | ""  | String  | "tlsKey" is "tls.key"  |
 |  cert.caCrt |  "" |  String |  "caCrt" is "ca.crt" |
