@@ -20,9 +20,10 @@ Here we get benefit of Helm Charts to package Arc (which is an API Gateway that 
 
 ## How to install Appbaseio Helm Chart
 
-1- run `helm repo add appbaseio https://opensource.appbase.io/helm-charts/appbaseio`
+1- run `helm repo add appbase https://opensource.appbase.io/helm-charts/`
 
-2- run `helm install appbase --set <variables>`
+2- run `helm repo update`
+2- run `helm install appbaseio appbase/appbaseio  --set <variables>`
 
 Make sure that you set below variables which are mandatory:
 
