@@ -2,22 +2,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    name:  {{ .Values.arc.name }} 
+    name:  {{ .Values.appbase.name }} 
   annotations:
     deployment.kubernetes.io/revision: "1"
   generation: 1
-  name: {{ .Values.arc.name }}
+  name: {{ .Values.appbase.name }}
 spec:
   selector:
     matchLabels:
-      app: {{ .Values.arc.name }}
+      app: {{ .Values.appbase.name }}
   strategy:
     type: RollingUpdate
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Values.arc.name }}
+        app: {{ .Values.appbase.name }}
     spec:
       containers:
         - env:
@@ -31,11 +31,11 @@ spec:
               value: {{ .Values.elasticsearch.clusterURL }}
             - name: LOG_FILE_PATH
               value: "/mnt/data/es.json"
-          image: {{.Values.arc.image}}:{{.Values.arc.tag | default .Chart.AppVersion}}
+          image: {{.Values.appbase.image}}:{{.Values.appbase.tag | default .Chart.AppVersion}}
           imagePullPolicy: IfNotPresent
-          name: {{ .Values.arc.name }}
+          name: {{ .Values.appbase.name }}
           ports:
-            - containerPort: {{ .Values.arc.port }}
+            - containerPort: {{ .Values.appbase.port }}
               name: http
               protocol: TCP
           volumeMounts:
@@ -47,18 +47,18 @@ spec:
           persistentVolumeClaim:
             claimName: {{ .Values.volume.pvcName }}
 
-  replicas: {{ .Values.arc.nodes }}
+  replicas: {{ .Values.appbase.nodes }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.arc.name }}
+  name: {{ .Values.appbase.name }}
   labels:
-    app: {{ .Values.arc.name }}
+    app: {{ .Values.appbase.name }}
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.arc.port }}
-      targetPort: {{ .Values.arc.port }}
+    - port: {{ .Values.appbase.port }}
+      targetPort: {{ .Values.appbase.port }}
   selector:
-    app: {{ .Values.arc.name }}
+    app: {{ .Values.appbase.name }}

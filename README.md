@@ -53,8 +53,8 @@ Here are the variables you can set for your cluster:
 |  volume.storageClassName |  standard | String  | Your Storage class which should be the same with PVC, if you have a specific class for your Volume, set that here to also be set for PVC  |
 | volume.accessModes  | ReadWriteMany  |  String |  Access mode for volume |
 |  volume.storageSize | 1Gi  | String  | This is the size of PVC storage, Default volume size is 5Gi which you can handle how much of it be assigned to PVC  |
-|  volume.pvcName | pvc  | String  |  You can change PVC (Persitent Volume Claim) name here, it's assigned to PV(Persistent Volume) |
-|  cert.name | ssl  | String  | you can add your certificate here by configuring below values. name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty  |
+|  volume.pvcName | pvc  | String  |  You can change PVC (Persitent Volume Claim) name here, it's assigned to PV(Persistent Volume), if you have a seperated PV, you can set PVC name in [`claimRef`]("https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume") |
+|  cert.name | ""  | String  | you can add your certificate here by configuring below values. name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty  |
 | cert.tlsCrt  |  "" | String  |  "tlsCrt" is your "tls.crt" |
 |  cert.tlsKey | ""  | String  | "tlsKey" is "tls.key"  |
 |  cert.caCrt |  "" |  String |  "caCrt" is "ca.crt" |
