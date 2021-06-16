@@ -51,7 +51,7 @@ volume:
 # tlsCrt is your tls.crt / tlsKey is tls.key / caCrt is ca.crt
 # name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty
 cert:
-  name: "ssl"
+  name: ""
   tlsCrt: ""
   tlsKey: ""
   caCrt: ""
