@@ -6,15 +6,6 @@ elasticsearch:
    # it should be in following pattern: http://<user>:<password>@domain:port ( Prtotocol Can also be -> https)
   clusterURL: ""
 
-# arc configuraion
-arc:
-  name: "arc"
-  nodes: 1
-  image: "appbaseio/arc"
-  tag: ""
-  port: 8000
-  storage: 1Gi
-
 # Appbase.io configuration / get id from "https://arc-dashboard.appbase.io/install"
 appbase:
   #APPBASE_ID
@@ -24,6 +15,15 @@ appbase:
   #APPBASE_PASSWORD
   password: "admin"
   domain: ""
+  # name for appbase service
+  name: "appbase"
+  nodes: 1
+  # image address
+  image: "appbaseio/arc"
+  tag: ""
+  # appbase service port
+  port: 8000
+  storage: 1Gi
 
 # Volume configuration
 # If you want it to create a Volume for you, leave name empty 

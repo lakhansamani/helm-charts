@@ -11,5 +11,5 @@ spec:
     - name: curl
       image: curlimages/curl
       command: ['ping']
-      args: ['{{.Values.arc.name }} -c1']
+      args: ['{{.Values.appbase.name }} -c1']
   restartPolicy: Never
