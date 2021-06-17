@@ -20,9 +20,10 @@ Here we get benefit of Helm Charts to package Arc (which is an API Gateway that 
 
 ## How to install Appbaseio Helm Chart
 
-1- run `helm repo add appbase`
+1- run `helm repo add appbase https://opensource.appbase.io/helm-charts/`
 
-2- run `helm install appbase --set <variables>`
+2- run `helm repo update`
+2- run `helm install appbaseio appbase/appbaseio  --set <variables>`
 
 Make sure that you set below variables which are mandatory:
 
@@ -44,6 +45,7 @@ Here are the variables you can set for your cluster:
 | elasticsearch.clusterURL  | ""  | String  |  clusterURL based on basic authentication. fluent-bit splites this clusterURL soit should be in following pattern: "http://<user>:<password>@domain:port" ( Prtotocol Can also be -> https)  |
 |  appbase.name | arc  |  String | It's the name of Arc service (appbase API gate way for elasticsearch) which you can use to access your application via service name, there will be a kubernetes service with this name in default namespace  |
 |  appbase.image |  appbaseio/arc | String  |  This is the image Appbase.io provides as gateway for your elasticsearch, if you have your local repository, you can push Arc image into that then change the URL here. |
+|  appbase.tag |  "" | String  | This is Arc Image tag which is currently set to a stable tag but if you want to use a specific image, can mention by setting this variable |
 |  appbase.port | 8000  | Integer  | The port that used for Arc service |
 | appbase.id  |  "" |  String |  This is **APPBASE_ID** that you can get from [Appbase.io]("https://arc-dashboard.appbase.io/install") |
 |  appbase.username | admin  |  String |  This is the username you choose for your Appbaseio |
