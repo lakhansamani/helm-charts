@@ -59,7 +59,6 @@ Here are the variables you can set for your cluster:
 |  cert.name | ""  | String  | you can add your certificate here by configuring below values. name is the name of secret file containing your certificate information, if you have your own secret file, you can only fill the name value and leave the other empty  |
 | cert.tlsCrt  |  "" | String  |  "tlsCrt" is your "tls.crt" |
 |  cert.tlsKey | ""  | String  | "tlsKey" is "tls.key"  |
-|  cert.caCrt |  "" |  String |  "caCrt" is "ca.crt" |
 | loadBalancer.serviceType  | ""  | String  |If yo're using kubernetes locally and as you won't have external IP, Can be "NodePort" but if it's your production kubernetes, you can leave it empty which means serviceType is : "LoadBalancer"|
 
 **Tips:**
